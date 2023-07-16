@@ -50,8 +50,8 @@
 						<table class="table table-bordered">
 							<thead>
 								<tr>
-									<th>NO</th>
-									<th>No.Invoice</th>
+									<th>#</th>
+									<th>No.Faktur</th>
 									<th>Customer</th>
 									<th class="text-center">Status</th>
 									<th class="text-center">OPSI</th>
@@ -122,7 +122,7 @@
 											<?php endif; ?>
 											<a class='btn btn-sm btn-success mb-1'
 												href="customer_invoice.php?id=<?php echo $i['id_transaksi']; ?>">
-												<i class="fa fa-print"></i> Invoice
+												<i class="fa fa-print"></i> Faktur
 											</a>
 										</td>
 									</tr>

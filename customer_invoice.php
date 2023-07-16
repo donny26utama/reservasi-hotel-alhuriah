@@ -46,7 +46,7 @@ $invoice = mysqli_query($koneksi, $query);
             </div>
 
             <div id="main" class="col-md-9">
-                <h4><b>INVOICE</b></h4>
+                <h4><b>Faktur</b></h4>
                 <br>
                 <small class="text-muted">Detail pesanan kamar</small>
                 <br>
