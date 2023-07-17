@@ -110,7 +110,9 @@
             $(".tampil_tujuan").html(result);
           }});
       }
-
+    });
+    $("#trx-btn-tolak").on("click", function () {
+      $("#trx-no_kamar").attr("required", false);
     });
   });
 

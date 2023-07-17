@@ -71,13 +71,14 @@
                                                     <span class="sr-only">Toggle Dropdown</span>
                                                 </button>
                                                 <ul class="dropdown-menu" role="menu">
-                                                    <?php if($i['invoice_status'] != 0): ?>
+                                                    <?php if($i['invoice_status'] == 1): ?>
                                                         <li>
-                                                            <a href="#">
+                                                            <a href="transaksi_konfirm.php?id=<?= $i['id_transaksi']; ?>">
                                                                 <i class="fa fa-check-square-o text-blue"></i>
                                                                 Konfirmasi Pembayaran
                                                             </a>
                                                         </li>
+                                                    <?php elseif($i['invoice_status'] > 1): ?>
                                                         <li>
                                                             <a href="../<?= $i['invoice_bukti'] ?>" target="_blank">
                                                                 <i class="fa fa-search text-light-blue"></i>
@@ -87,16 +88,32 @@
                                                     <?php endif; ?>
                                                     <li>
                                                         <a href="transaksi_invoice.php?id=<?= $i['id_transaksi']; ?>">
-                                                            <i class="fa fa-print text-green"></i> Cetak Faktur
+                                                            <i class="fa fa-print text-navy"></i> Cetak Faktur
                                                         </a>
                                                     </li>
+                                                    <?php if($i['status'] == 'valid'): ?>
+                                                    <li>
+                                                        <a href="transaksi_checkin.php?id=<?= $i['id_transaksi']; ?>">
+                                                            <i class="fa fa-bed text-green"></i> Check-In
+                                                        </a>
+                                                    </li>
+                                                    <?php endif; ?>
+                                                    <?php if($i['status'] == 'checkin'): ?>
+                                                    <li>
+                                                        <a href="transaksi_checkout.php?id=<?= $i['id_transaksi']; ?>">
+                                                            <i class="fa fa-sign-in text-red"></i> Check-Out
+                                                        </a>
+                                                    </li>
+                                                    <?php endif; ?>
+                                                    <?php if($i['status'] == 'checkout'): ?>
                                                     <li>
                                                         <a href="transaksi_rating.php?id=<?= $i['id_transaksi']; ?>">
                                                             <i class="fa fa-star text-yellow"></i> Beri Rating
                                                         </a>
                                                     </li>
-                                                    <li class="divider"></li>
-                                                    <li>
+                                                    <?php endif; ?>
+                                                    <li class="divider" style="display: none;"></li>
+                                                    <li style="display: none;">
                                                         <a onclick="return confirm('Yakin ingin hapus?')"
                                                             class="text-red"
                                                             href="transaksi_hapus.php?id=<?= $i['id_transaksi']; ?>">
@@ -112,7 +129,14 @@
                                                     Tanggal: <?= date('d-m-Y', strtotime($i['tgl_transaksi'])); ?>
                                                 </small>
                                             </div>
-                                            <b><?php echo $i['invoice_no'] ?></b>
+                                            <div>
+                                                <b><?php echo $i['invoice_no'] ?></b>
+                                            </div>
+                                            <div>
+                                                <small>
+                                                    Keterangan Reservasi: <?= $i['keterangan_reservasi'] ?: '-' ?>
+                                                </small>
+                                            </div>
                                         </td>
                                         <td>
                                             <div>
@@ -178,7 +202,7 @@
                                                 } elseif($i['status'] == 'non-valid') {
                                                     echo "<span class='badge bg-light-blue'>Non Valid</span>";
                                                 } elseif($i['status'] == 'valid') {
-                                                    echo "<span class='badge badge-danger'>Valid</span>";
+                                                    echo "<span class='badge bg-olive'>Valid</span>";
                                                 } elseif($i['status'] == 'checkin') {
                                                     echo "<span class='badge bg-green'>Check-In</span>";
                                                 } elseif($i['status'] == 'checkout') {

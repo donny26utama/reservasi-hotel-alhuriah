@@ -148,7 +148,7 @@ if ($_SESSION['status'] != "admin_login") {
                                         <i class="fa fa-money"></i> <span>Validasi Pembayaran</span>
                                     </a>
                                 </li>
-                                <li>
+                                <li style="display: none;">
                                     <a href="booking.php">
                                         <i class="fa fa-calendar-check-o"></i> <span>Data Check-In</span>
                                     </a>
