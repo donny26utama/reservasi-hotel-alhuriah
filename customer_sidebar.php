@@ -8,7 +8,7 @@ $c = mysqli_fetch_assoc($customer)
 	<div class="shop__sidebar__accordion">
 		<div class="card">
 			<div class="card-heading">
-				<h5><b>Hy, <?php echo $c['customer_nama'] ?></b></h5>
+				<h5><b>Hai, <?php echo $c['customer_nama'] ?></b></h5>
 			</div>
 			<div class="card-body">
 				<div class="shop__sidebar__tags">

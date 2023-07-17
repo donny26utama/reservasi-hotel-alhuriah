@@ -30,10 +30,11 @@
               <table class="table table-bordered table-striped" id="table-datatable">
                 <thead>
                   <tr>
-                    <th width="1%">NO</th>
+                    <th width="1%">#</th>
+                    <th>Nomor Kamar</th>
                     <th>Nama Kamar</th>
                     <th>Lantai</th>
-                    <th>Nomor Kamar</th>
+                    <th>Status</th>
                     <th width="12%">OPSI</th>
                   </tr>
                 </thead>
@@ -45,10 +46,16 @@
                     ?>
                     <tr>
                       <td><?php echo $no++; ?></td>
+                      <td><?php echo $d['nokamar']; ?></td>
                       <td><?php echo $d['kamar_nama']; ?> <?php echo $d['kamar_ranjang']; ?> bed</td>
                       <td><?php echo $d['lantai']; ?></td>
-                      <td><?php echo $d['nokamar']; ?></td>
-
+                      <td>
+                        <?php if ($d['kosong'] === 'Y'): ?>
+                          <span class="badge bg-green">Kosong</span>
+                        <?php else: ?>
+                          <span class="badge bg-blue">Digunakan</span>
+                        <?php endif; ?>
+                      </td>
                       <td>
       
                               <a class="btn btn-warning btn-sm" href="nokamar_edit.php?id=<?php echo $d['nokamar'] ?>"><i class="fa fa-cog"></i></a>

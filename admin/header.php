@@ -100,7 +100,7 @@ if ($_SESSION['status'] != "admin_login") {
                                 </li>
                                 <li>
                                     <a href="customer.php">
-                                        <i class="fa fa-users"></i> <span>Data Pelanggan</span>
+                                        <i class="fa fa-users"></i> <span>Data Tamu</span>
                                     </a>
                                 </li>
                                 <li style="display: none;">
@@ -139,7 +139,7 @@ if ($_SESSION['status'] != "admin_login") {
                             </a>
                             <ul class="treeview-menu" style="display: none;">
                                 <li>
-                                    <a href="booking.php">
+                                    <a href="transaksi.php">
                                         <i class="fa fa-list-alt"></i> <span>Semua Transaksi</span>
                                     </a>
                                 </li>
