@@ -17,7 +17,10 @@ if (in_array($ext, $allowed)) {
     $foto_baru = sprintf('gambar/bukti_pembayaran/%s.%s', $rand, $ext);
     move_uploaded_file($_FILES['bukti']['tmp_name'], $foto_baru);
 
-    $query = "update check_in set invoice_bukti='$foto_baru', invoice_status='1' where id_transaksi='$id'";
+    $query = "
+        update check_in
+        set invoice_bukti='$foto_baru', status='non-valid', invoice_status='1'
+        where id_transaksi='$id'";
     $update = mysqli_query($koneksi, $query);
     $error = mysqli_error($koneksi);
 

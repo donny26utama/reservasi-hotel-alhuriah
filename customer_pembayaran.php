@@ -107,15 +107,15 @@
 							<table class="table table-bordered">
 								<tr>
 									<th width="30%">Nomor Rekening</th>
-									<td>123-122-3345</td>
+									<td>123-456-7890</td>
 								</tr>
 								<tr>
 									<th>Atas Nama</th>
-									<td>Royal Hotel</td>
+									<td>AlHuriah Hotel</td>
 								</tr>
 								<tr>
 									<th>Bank</th>
-									<td>BCA</td>
+									<td>Bank Central Asia (BCA)</td>
 								</tr>
 							</table>
 							<br/>

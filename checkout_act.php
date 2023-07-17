@@ -61,10 +61,11 @@ $status = "booking";
 $keterangan_reservasi = mysqli_real_escape_string($koneksi, $_POST['keterangan_reservasi']);
 $noktp = mysqli_real_escape_string($koneksi,$_SESSION['customer_id']);
 
-mysqli_query($koneksi,"INSERT into check_in
-    (id_transaksi, tgl_transaksi, tgl_check_in, jumlahorang, status, keterangan_reservasi, no_ktp, invoice_no)
-    values
-    (NULL, '$tgl_transaksi','$tgl_check_in','$jumlahorang','$status','$keterangan_reservasi','$noktp','xxx')")or die(mysqli_error($koneksi));
+$insert_checkin = "INSERT into check_in
+(id_transaksi, tgl_transaksi, tgl_check_in, jumlahorang, status, keterangan_reservasi, no_ktp, invoice_no)
+values
+(NULL, '$tgl_transaksi','$tgl_check_in','$jumlahorang','$status','$keterangan_reservasi','$noktp','xxx')";
+mysqli_query($koneksi, $insert_checkin)or die(mysqli_error($koneksi));
 
 $cek = mysqli_query($koneksi,"SELECT id_transaksi from check_in where no_ktp='$noktp' and invoice_no='xxx'");
 $dtid = mysqli_fetch_object($cek);
@@ -75,12 +76,15 @@ $update = mysqli_query($koneksi, "update check_in set invoice_no='$no_inv' where
 
 #bahan ambil layanan tambahan, setelah tahu id transaksi
 $layanan_tambahan = $_POST['layanan_tambahan'];
-for($a = 0; $a < count($layanan_tambahan); $a++){
+$total_layanan = 0;
+for ($a = 0; $a < count($layanan_tambahan); $a++) {
     $lt_id = $layanan_tambahan[$a];
     $qlayanan = mysqli_query($koneksi,"select * from layanan_tambahan where lt_id='$lt_id'");
     $dtlt = mysqli_fetch_object($qlayanan);
     $hargalt = $dtlt->lt_harga;
-    mysqli_query($koneksi, "INSERT into ambil (lt_id, id_transaksi, harga) values('$lt_id','$id_transaksi', '$hargalt')");
+    $insert_ambil = "INSERT into ambil (lt_id, id_transaksi, harga) values('$lt_id', '$id_transaksi', '$hargalt')";
+    mysqli_query($koneksi, $insert_ambil);
+    $total_layanan += $hargalt;
 }
 
 #bahan punya detail checkin, setelah tau id transaksi
@@ -90,8 +94,15 @@ $tgl_dari = strtotime($tgl_check_in );
 $tgl_sampai = strtotime(mysqli_real_escape_string($koneksi, $_POST['sampai']));
 $jumlah_hari = $tgl_sampai - $tgl_dari;
 $lama_inap = round($jumlah_hari / (60 * 60 * 24));
+$total_inap = $harga * $lama_inap;
 
-mysqli_query($koneksi,"INSERT into punya (id_transaksi, kamar_id, harga, lama_inap) values ('$id_transaksi', '$kamar_id', '$harga', '$lama_inap')");
+$insert_punya = "
+    INSERT into punya (id_transaksi, kamar_id, harga, lama_inap)
+    values ('$id_transaksi', '$kamar_id', '$harga', '$lama_inap')";
+mysqli_query($koneksi, $insert_punya);
+
+$total_bayar = $total_inap + $total_layanan;
+mysqli_query($koneksi, "update check_in set invoice_total='$total_bayar' where id_transaksi = '$id_transaksi'");
 
 unset($_SESSION['booking_kamar_status']);
 unset($_SESSION['booking_kamar']);

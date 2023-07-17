@@ -74,25 +74,33 @@
                                                     <?php if($i['invoice_status'] != 0): ?>
                                                         <li>
                                                             <a href="#">
-                                                                <i class="fa fa-search"></i> Lihat Bukti Bayar
+                                                                <i class="fa fa-check-square-o text-blue"></i>
+                                                                Konfirmasi Pembayaran
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="../<?= $i['invoice_bukti'] ?>" target="_blank">
+                                                                <i class="fa fa-search text-light-blue"></i>
+                                                                Lihat Bukti Bayar
                                                             </a>
                                                         </li>
                                                     <?php endif; ?>
                                                     <li>
                                                         <a href="transaksi_invoice.php?id=<?= $i['id_transaksi']; ?>">
-                                                            <i class="fa fa-print"></i> Cetak Faktur
+                                                            <i class="fa fa-print text-green"></i> Cetak Faktur
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <a href="transaksi_rating.php?id=<?= $i['id_transaksi']; ?>">
-                                                            <i class="fa fa-star"></i> Beri Rating
+                                                            <i class="fa fa-star text-yellow"></i> Beri Rating
                                                         </a>
                                                     </li>
                                                     <li class="divider"></li>
                                                     <li>
                                                         <a onclick="return confirm('Yakin ingin hapus?')"
+                                                            class="text-red"
                                                             href="transaksi_hapus.php?id=<?= $i['id_transaksi']; ?>">
-                                                            <i class="fa fa-trash"></i> Hapus Transaksi
+                                                            <i class="fa fa-trash"></i> Batalkan Transaksi
                                                         </a>
                                                     </li>
                                                 </ul>

@@ -104,7 +104,7 @@
 											<?php if(in_array($i['invoice_status'], array(0, 1))): ?>
 												<a class='btn btn-sm btn-primary mb-1'
 													href="customer_pembayaran.php?id=<?php echo $i['id_transaksi']; ?>">
-													<i class="fa fa-money"></i> Konfirmasi Pembayaran
+													<i class="fa fa-money"></i> Unggah Bukti Pembayaran
 												</a><br>
 											<?php endif; ?>
 											<?php if($i['invoice_status'] == 1): ?>
