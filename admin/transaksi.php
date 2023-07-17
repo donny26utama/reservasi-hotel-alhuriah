@@ -25,12 +25,12 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 1%">#</th>
+                                        <th class="text-center">Opsi</th>
                                         <th>No.Faktur</th>
                                         <th>Tamu</th>
                                         <th>Kamar</th>
                                         <th>Total Bayar</th>
                                         <th>Status</th>
-                                        <th class="text-center">Opsi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -42,7 +42,8 @@
                                             customer.customer_nama,
                                             customer.customer_email,
                                             customer.customer_hp,
-                                            data_kamar.kamar_nama
+                                            data_kamar.kamar_nama,
+                                            data_kamar.nokamar
                                         FROM check_in
                                         INNER JOIN customer
                                             ON customer.no_ktp = check_in.no_ktp
@@ -61,10 +62,49 @@
                                 ?>
                                     <tr>
                                         <td><?php echo $no++; ?></td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-default">Opsi</button>
+                                                <button type="button" class="btn btn-default dropdown-toggle"
+                                                    data-toggle="dropdown">
+                                                    <span class="caret"></span>
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <?php if($i['invoice_status'] != 0): ?>
+                                                        <li>
+                                                            <a href="#">
+                                                                <i class="fa fa-search"></i> Lihat Bukti Bayar
+                                                            </a>
+                                                        </li>
+                                                    <?php endif; ?>
+                                                    <li>
+                                                        <a href="transaksi_invoice.php?id=<?= $i['id_transaksi']; ?>">
+                                                            <i class="fa fa-print"></i> Cetak Faktur
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="transaksi_rating.php?id=<?= $i['id_transaksi']; ?>">
+                                                            <i class="fa fa-star"></i> Beri Rating
+                                                        </a>
+                                                    </li>
+                                                    <li class="divider"></li>
+                                                    <li>
+                                                        <a onclick="return confirm('Yakin ingin hapus?')"
+                                                            href="transaksi_hapus.php?id=<?= $i['id_transaksi']; ?>">
+                                                            <i class="fa fa-trash"></i> Hapus Transaksi
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
                                         <td>
-                                            Tanggal: <?php echo date('d-m-Y', strtotime($i['tgl_transaksi'])); ?>
-                                            <br>
-                                            <?php echo $i['invoice_no'] ?>
+                                            <div>
+                                                <small>
+                                                    Tanggal: <?= date('d-m-Y', strtotime($i['tgl_transaksi'])); ?>
+                                                </small>
+                                            </div>
+                                            <b><?php echo $i['invoice_no'] ?></b>
                                         </td>
                                         <td>
                                             <div>
@@ -87,9 +127,24 @@
                                             </div>
                                         </td>
                                         <td>
-                                            Kamar: <?= $i['kamar_nama'] ?><br>
-                                            No. Kamar: <br>
-                                            Layanan Tambahan:
+                                            <div><b><?= $i['kamar_nama'] ?></b></div>
+                                            <div>No. Kamar: <?= $i['nokamar'] ?: '-' ?></div>
+                                            <div>Layanan Tambahan:</div>
+                                            <?php
+                                                $id_transkasi = $i['id_transaksi'];
+                                                $query_tambahan = "
+                                                    SELECT
+                                                        ambil.*,
+                                                        layanan_tambahan.lt_nama
+                                                    FROM ambil
+                                                    INNER JOIN layanan_tambahan
+                                                        on layanan_tambahan.lt_id = ambil.lt_id
+                                                    WHERE ambil.id_transaksi='$id_transkasi'";
+                                                $tambahan = mysqli_query($koneksi, $query_tambahan);
+                                                while($l = mysqli_fetch_array($tambahan)):
+                                            ?>
+                                                <div><small>- <?= $l['lt_nama'] ?></small></div>
+                                            <?php endwhile; ?>
                                         </td>
                                         <td>
                                             <?php echo "Rp. ".number_format($i['invoice_total'])." ,-" ?>
@@ -122,21 +177,6 @@
                                                     echo "<span class='badge bg-red'>Check-Out</span>";
                                                 }
                                             ?>
-                                        </td>
-                                        <td class="text-center">
-                                            <a class='btn btn-sm btn-success'
-                                                href="transaksi_invoice.php?id=<?= $i['is_transaksi']; ?>">
-                                                <i class="fa fa-print"></i> Faktur
-                                            </a>
-                                            <a class='btn btn-sm btn-danger'
-                                                onclick="return confirm('Yakin ingin hapus?')"
-                                                href="transaksi_hapus.php?id=<?= $i['is_transaksi']; ?>">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
-                                            <a class='btn btn-sm btn-warning'
-                                                href="transaksi_rating.php?id=<?php echo $i['is_transaksi']; ?>">
-                                                <i class="fa fa-star"></i> Rating
-                                            </a>
                                         </td>
                                     </tr>
                                 <?php endwhile; ?>

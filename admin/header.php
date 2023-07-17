@@ -143,7 +143,7 @@ if ($_SESSION['status'] != "admin_login") {
                                         <i class="fa fa-list-alt"></i> <span>Semua Transaksi</span>
                                     </a>
                                 </li>
-                                <li>
+                                <li style="display: none;">
                                     <a href="invoice.php">
                                         <i class="fa fa-money"></i> <span>Validasi Pembayaran</span>
                                     </a>
@@ -153,17 +153,17 @@ if ($_SESSION['status'] != "admin_login") {
                                         <i class="fa fa-calendar-check-o"></i> <span>Data Check-In</span>
                                     </a>
                                 </li>
-                                <li>
+                                <li style="display: none;">
                                     <a href="tagihan.php">
                                         <i class="fa fa-retweet"></i> <span>Lihat Tagihan</span>
                                     </a>
                                 </li>
-                                <li>
+                                <li style="display: none;">
                                     <a href="pembayaran.php">
                                         <i class="fa fa-dollar"></i> <span>Pembayaran</span>
                                     </a>
                                 </li>
-                                <li>
+                                <li style="display: none;">
                                     <a href="bill.php">
                                         <i class="fa fa-retweet"></i> <span>Bill</span>
                                     </a>
