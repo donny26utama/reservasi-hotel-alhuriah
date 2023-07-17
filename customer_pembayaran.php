@@ -59,29 +59,33 @@
 
 							<table class="table table-bordered">
 								<tbody>
-									<?php 
+									<?php
 									$id_invoice = mysqli_escape_string($koneksi, $_GET['id']);
 									$id = $_SESSION['customer_id'];
-									$invoice = mysqli_query($koneksi,"select * from invoice where invoice_customer='$id' and invoice_id='$id_invoice' order by invoice_id desc");
-									while($i = mysqli_fetch_array($invoice)){
-										?>
+									$query = "
+										select *
+										from check_in
+										where no_ktp='$id' and id_transaksi='$id_invoice'
+										order by id_transaksi desc";
+									$invoice = mysqli_query($koneksi, $query);
+									while($i = mysqli_fetch_array($invoice)):
+									?>
 										<tr>
-											<th width="20%">No.Invoice</th>	
-											<td>INVOICE-00<?php echo $i['invoice_id'] ?></td>
+											<th style="width: 20%">No. Faktur</th>
+											<td><?php echo $i['invoice_no'] ?></td>
 										</tr>
 										<tr>
-											<th>Tanggal</th>	
-											<td><?php echo date('d-m-Y', strtotime($i['invoice_tanggal'])) ?></td>
+											<th>Tanggal</th>
+											<td><?php echo date('d-m-Y', strtotime($i['tgl_transaksi'])) ?></td>
 										</tr>
 										<tr>
-											<th>Total Bayar</th>	
-											<td><?php echo "Rp. ".number_format($i['invoice_total_bayar'])." ,-" ?></td>
+											<th>Total Bayar</th>
+											<td><?php echo "Rp. ".number_format($i['invoice_total'])." ,-" ?></td>
 										</tr>
 										<tr>
-											<th>Status</th>	
+											<th>Status</th>
 											<td>
-
-												<?php 
+												<?php
 												if($i['invoice_status'] == 0){
 													echo "<span class='label label-warning'>Menunggu Pembayaran</span>";
 												}elseif($i['invoice_status'] == 1){
@@ -96,12 +100,9 @@
 												?>
 											</td>
 										</tr>
-										<?php 
-									}
-									?>
+									<?php endwhile; ?>
 								</tbody>
 							</table>
-
 							<br/>
 							<p>Silahkan Lakukan Pembayaran Ke Nomor Rekening Berikut :</p>
 							<table class="table table-bordered">
@@ -131,14 +132,9 @@
 								<br>
 								<input type="submit" value="Upload Bukti Pembayaran" class="site-btn">
 							</form>
-
-						</div>	
-
+						</div>
 					</div>
-
-					
 				</div>
-
 			</div>
 		</div>
 	</div>
