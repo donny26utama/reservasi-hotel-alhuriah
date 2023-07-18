@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../koneksi.php';
 
 $aksi = $_POST['aksi'];
