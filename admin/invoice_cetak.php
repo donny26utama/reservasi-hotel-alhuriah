@@ -1,154 +1,162 @@
+<?php
+session_start();
+include '../koneksi.php';
+$id_invoice = mysqli_real_escape_string($koneksi, $_GET['id']);
+$query = "
+    select
+        check_in.*,
+        customer.customer_nama,
+        customer.customer_hp,
+        punya.kamar_id,
+        punya.lama_inap
+    from check_in
+    inner join customer
+        on customer.no_ktp = check_in.no_ktp
+    inner join punya
+        on punya.id_transaksi = check_in.id_transaksi
+    where check_in.id_transaksi='$id_invoice'
+    order by check_in.id_transaksi desc";
+$invoice = mysqli_query($koneksi, $query);
+?>
 <!DOCTYPE html>
-<html>
+<html lang="id-ID">
 <head>
-	<title></title>
+    <title></title>
+    <style>
+        body{
+            font-family: sans-serif;
+        }
+
+        .table{
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .table th,
+        .table td{
+            padding: 5px 10px;
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
+    <center>
+        <h2>AL-HURIAH HOTEL</h2>
+    </center>
+    <div>
+        <?php
+            while($i = mysqli_fetch_array($invoice)):
+                $id_kamar = $i['kamar_id'];
+                $query_kamar = "
+                    SELECT *
+                    FROM kamar
+                    WHERE kamar_id='$id_kamar'
+                    ORDER BY kamar_id desc";
+                $kamar = mysqli_query($koneksi, $query_kamar);
+                $k = mysqli_fetch_assoc($kamar)
+        ?>
+            <div>
+                <h4><?= $i['invoice_no'] ?></h4>
+                <br/>
+                <table class="table table-bordered">
+                    <tr>
+                        <td style="width: 20%">Nama</td>
+                        <td><?= $i['customer_nama']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>HP</td>
+                        <td><?= $i['customer_hp']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Kamar</td>
+                        <td>
+                            <b><?= $k['kamar_nama']; ?></b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td>
+                            <?php
+                            if($i['invoice_status'] == 0){
+                                echo "<span class='label label-warning'>Menunggu Pembayaran</span>";
+                            }elseif($i['invoice_status'] == 1){
+                                echo "<span class='label label-default'>Menunggu Konfirmasi</span>";
+                            }elseif($i['invoice_status'] == 2){
+                                echo "<span class='label label-danger'>Ditolak</span>";
+                            }elseif($i['invoice_status'] == 3){
+                                echo "<span class='label label-primary'>Dikonfirmasi</span>";
+                            }elseif($i['invoice_status'] == 4){
+                                echo "<span class='label label-success'>Selesai</span>";
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                </table>
+                <br/>
+                <br>
+                Detail :
+                <br>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td>Harga Kamar</td>
+                            <td class="text-center"><?= "Rp. ".number_format($k['kamar_harga'])." ,-"; ?></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Lama Menginap :
+                                <small class="text-muted">
+                                    <?php
+                                        $durasi = sprintf('%s +%s days', $i['tgl_check_in'], $i['lama_inap']);
+                                        $check_in = date('d/m/Y', strtotime($i['tgl_check_in']));
+                                        $check_out = date('d/m/Y', strtotime($durasi));
+                                    ?>
+                                    ( <?php echo $check_in, ' - ', $check_out; ?> )
+                                </small>
+                            </td>
+                            <td class="text-center">
+                                <?= $i['lama_inap'] ?> Hari
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Layanan Tambahan :
+                                <br>
+                                <?php
+                                    $harga_layanan = 0;
+                                    $id_invoice = $i['id_transaksi'];
+                                    $query_layanan_tambahan = "
+                                        select *
+                                        from ambil
+                                        inner join layanan_tambahan
+                                            on layanan_tambahan.lt_id = ambil.lt_id
+                                        where ambil.id_transaksi='$id_invoice'
+                                    ";
+                                    $template = '<small class="text-muted">- %s (Rp. %s ,-)</small>';
+                                    $layanan = mysqli_query($koneksi, $query_layanan_tambahan);
+                                    while($l = mysqli_fetch_array($layanan)):
+                                        $harga_layanan += $l['lt_harga'];
+                                        $lt_harga = number_format($l['lt_harga']);
+                                ?>
+                                    &nbsp; &nbsp; &nbsp;<?php echo sprintf($template, $l['lt_nama'], $lt_harga) ?><br>
+                                <?php endwhile; ?>
+                            </td>
+                            <td class="text-center"><?= "Rp. ".number_format($harga_layanan)." ,-"; ?></td>
+                        </tr>
+                        <tr>
+                            <td>Total Bayar</td>
+                            <td class="text-center bg-primary text-white font-weight-bold">
+                                <?= "Rp. ".number_format($i['invoice_total'])." ,-"; ?>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+            </div>
+        <?php endwhile; ?>
+    </div>
 
-	<?php 
-	session_start();
-	include '../koneksi.php';
-	?>
-
-	<style>
-
-		body{
-			font-family: sans-serif;
-		}
-
-		.table{
-			border-collapse: collapse;
-			width: 100%;
-		}
-		.table th,
-		.table td{
-			padding: 5px 10px;
-			border: 1px solid black;
-		}
-	</style>
-
-	<center>
-		<h2>ROYALE HOTEL</h2>
-	</center>
-	
-	<div>
-
-		<?php 
-		$id_invoice = mysqli_real_escape_string($koneksi,$_GET['id']);
-
-
-		$invoice = mysqli_query($koneksi,"select * from invoice where invoice_id='$id_invoice' order by invoice_id desc");
-		while($i = mysqli_fetch_array($invoice)){
-
-			$id_kamar = $i['invoice_kamar'];
-			$kamar = mysqli_query($koneksi,"SELECT * FROM kamar,kategori where kategori_id=kamar_kategori and kamar_id='$id_kamar' order by kamar_id desc");
-			$k = mysqli_fetch_assoc($kamar)
-			?>
-			<div>
-				<h4>INVOICE-00<?php echo $i['invoice_id'] ?></h4>
-				<br/>
-				<table class="table table-bordered">
-					<tr>
-						<td width="20%">Nama</td>
-						<td><?php echo $i['invoice_nama']; ?></td>
-					</tr>
-					<tr>
-						<td>HP</td>
-						<td><?php echo $i['invoice_hp']; ?></td>
-					</tr>
-					<tr>
-						<td>Kamar</td>
-						<td>
-							<b><?php echo $k['kamar_nama']; ?></b>
-						</td>
-					</tr>
-					<tr>
-						<td>Status</td>
-						<td>
-							<?php 
-							if($i['invoice_status'] == 0){
-								echo "<span class='label label-warning'>Menunggu Pembayaran</span>";
-							}elseif($i['invoice_status'] == 1){
-								echo "<span class='label label-default'>Menunggu Konfirmasi</span>";
-							}elseif($i['invoice_status'] == 2){
-								echo "<span class='label label-danger'>Ditolak</span>";
-							}elseif($i['invoice_status'] == 3){
-								echo "<span class='label label-primary'>Dikonfirmasi</span>";
-							}elseif($i['invoice_status'] == 4){
-								echo "<span class='label label-success'>Selesai</span>";
-							}
-							?>
-						</td>
-					</tr>
-				</table> 
-				<br/>
-
-				<br>
-				Detail :
-				<br>
-				
-				<table class="table table-bordered">
-					<tbody>
-						<tr>
-							<td>Harga Kamar</td>
-							<td class="text-center"><?php echo "Rp. ".number_format($i['invoice_harga'])." ,-"; ?></td>
-						</tr>
-						<tr>
-							<td>
-								Lama Menginap : 
-								<small class="text-muted">( <?php echo date('d/m/Y', strtotime($i['invoice_dari'])); ?> - <?php echo date('d/m/Y', strtotime($i['invoice_sampai'])); ?> )</small>
-							</td>
-							<td class="text-center">
-								<?php 
-								$tgl_dari = strtotime($i['invoice_dari'] );
-								$tgl_sampai = strtotime($i['invoice_sampai'] );
-								$jumlah_hari =  $tgl_sampai - $tgl_dari;
-								$hari = round($jumlah_hari / (60 * 60 * 24));
-								?>
-								<?php echo $hari ?> Hari
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Layanan Tambahan :
-								<br>
-								<?php   
-								$harga_layanan = 0;
-								$id_invoice = $i['invoice_id'];
-								$layanan = mysqli_query($koneksi,"select * from layanan_tambahan, invoice_layanan_tambahan where ilt_layanan=lt_id and ilt_invoice='$id_invoice'");
-
-								while($l = mysqli_fetch_array($layanan)){
-									$harga_layanan += $l['lt_harga'];
-									?>
-									&nbsp; &nbsp; &nbsp;<small class="text-muted">- <?php echo $l['lt_nama'] ?> &nbsp; - &nbsp; (<?php echo "Rp. ".number_format($l['lt_harga'])." ,-" ?>)</small><br>
-									<?php
-								}
-								?>
-							</td>
-							<td class="text-center"><?php echo "Rp. ".number_format($harga_layanan)." ,-"; ?></td>
-						</tr>
-						<tr>
-							<td>Total Bayar</td>
-							<td class="text-center bg-primary text-white font-weight-bold"><?php echo "Rp. ".number_format($i['invoice_total_bayar'])." ,-"; ?></td>
-						</tr>
-					</tbody>
-				</table>
-
-
-				<br>
-				
-
-			</div>	
-
-
-			<?php 
-		}
-		?>
-	</div>
-
-
-	<script>
-		window.print();
-	</script>
+    <script>
+        window.print();
+    </script>
 </body>
 </html>

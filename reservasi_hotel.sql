@@ -149,4 +149,17 @@ CREATE TABLE `punya`  (
   PRIMARY KEY (`id_transaksi`, `kamar_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
+-- ----------------------------
+-- Table structure for rating
+-- ----------------------------
+DROP TABLE IF EXISTS `rating`;
+CREATE TABLE `rating`  (
+  `rating_id` int NOT NULL AUTO_INCREMENT,
+  `rating_tanggal` date NOT NULL,
+  `rating_invoice` int NOT NULL,
+  `rating` int NOT NULL,
+  `rating_review` text NOT NULL,
+  PRIMARY KEY (`rating_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = Dynamic;
+
 SET FOREIGN_KEY_CHECKS = 1;

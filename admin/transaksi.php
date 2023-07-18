@@ -87,7 +87,7 @@
                                                         </li>
                                                     <?php endif; ?>
                                                     <li>
-                                                        <a href="transaksi_invoice.php?id=<?= $i['id_transaksi']; ?>">
+                                                        <a href="invoice_cetak.php?id=<?= $i['id_transaksi']; ?>">
                                                             <i class="fa fa-print text-navy"></i> Cetak Faktur
                                                         </a>
                                                     </li>
