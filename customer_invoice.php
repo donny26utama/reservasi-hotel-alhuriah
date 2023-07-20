@@ -95,8 +95,6 @@ $invoice = mysqli_query($koneksi, $query);
                                 <div class="col-lg-10">
                                     <h5><?php echo $k['kamar_nama']; ?></h5>
                                     <small class="text-muted">
-                                        <?php echo $k['kategori_nama']; ?>
-                                        |
                                         Ranjang : <?php echo $k['kamar_ranjang']; ?>
                                         |
                                         Ukuran Kamar : <?php echo $k['kamar_ukuran']; ?> m2
