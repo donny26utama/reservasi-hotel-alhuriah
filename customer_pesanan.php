@@ -53,6 +53,7 @@
 									<th>#</th>
 									<th>No.Faktur</th>
 									<th>Customer</th>
+									<th>Kamar</th>
 									<th class="text-center">Status</th>
 									<th class="text-center">OPSI</th>
 								</tr>
@@ -61,30 +62,35 @@
 								<?php
 									$no = 1;
 									$id = $_SESSION['customer_id'];
-									$query_kamar = "select harga * lama_inap from punya where punya.id_transaksi = check_in.id_transaksi";
-									$query_layanan = "select sum(ambil.harga) from ambil where ambil.id_transaksi = check_in.id_transaksi";
 									$query = "
 										select
 											check_in.*,
 											customer.customer_nama,
-											($query_kamar) as harga_kamar,
-											($query_layanan) as biaya_layanan
+											kamar.kamar_nama,
+											punya.nokamar
 										from check_in
 										inner join customer on customer.no_ktp = check_in.no_ktp
+										inner join punya on punya.id_transaksi = check_in.id_transaksi
+										inner join kamar on kamar.kamar_id = punya.kamar_id
 										where check_in.no_ktp='$id'
 										order by check_in.id_transaksi desc";
 									$invoice = mysqli_query($koneksi,$query);
 									while($i = mysqli_fetch_array($invoice)):
-										$total_bayar = $i['harga_kamar'] + $i['biaya_layanan'];
 								?>
 									<tr>
 										<td><?php echo $no++ ?></td>
 										<td>
 											<small class="text-muted"><?php echo date('d/m/Y', strtotime($i['tgl_transaksi'])) ?></small><br>
 											<?php echo $i['invoice_no'] ?><br>
-											<small><?php echo "Rp. ".number_format($total_bayar)." ,-" ?></small>
+											<small><?php echo "Rp. ".number_format($i['invoice_total'])." ,-" ?></small>
 										</td>
 										<td><?php echo $i['customer_nama'] ?></td>
+										<td>
+											<div>
+												Tipe Kamar: <b><?php echo $i['kamar_nama'] ?></b>
+											</div>
+											<small>No. Kamar: <?= $i['nokamar'] ?></small>
+										</td>
 										<td class="text-center">
 											<?php
 												if ($i['invoice_status'] == 0) {
