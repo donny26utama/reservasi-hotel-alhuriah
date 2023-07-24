@@ -6,7 +6,16 @@ include 'koneksi.php';
 $customer_email = mysqli_real_escape_string($koneksi, $_POST['customer_email']);
 $customer_password = mysqli_real_escape_string($koneksi, $_POST['customer_password']);
 
-$login = mysqli_query($koneksi, "SELECT * FROM customer WHERE customer_email='$customer_email' AND customer_password=md5('$customer_password')");
+$query = "
+	SELECT *
+	FROM customer
+	WHERE
+		(
+			customer_email='$customer_email' OR
+			no_ktp='$customer_email'
+		) AND
+		customer_password=md5('$customer_password')";
+$login = mysqli_query($koneksi, $query);
 $cek = mysqli_num_rows($login);
 
 if($cek > 0){

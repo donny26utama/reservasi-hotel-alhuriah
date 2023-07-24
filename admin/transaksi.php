@@ -88,7 +88,7 @@
                                                     <?php endif; ?>
                                                     <li>
                                                         <a href="invoice_cetak.php?id=<?= $i['id_transaksi']; ?>">
-                                                            <i class="fa fa-print text-navy"></i> Cetak Faktur
+                                                            <i class="fa fa-print text-navy"></i> Cetak Bukti Check In
                                                         </a>
                                                     </li>
                                                     <?php if($i['status'] == 'valid'): ?>
@@ -106,7 +106,7 @@
                                                     </li>
                                                     <?php endif; ?>
                                                     <?php if($i['status'] == 'checkout'): ?>
-                                                    <li>
+                                                    <li style="display: none;">
                                                         <a href="transaksi_rating.php?id=<?= $i['id_transaksi']; ?>">
                                                             <i class="fa fa-star text-yellow"></i> Beri Rating
                                                         </a>
@@ -192,6 +192,10 @@
                                                     echo "<span class='badge bg-blue'>Dikonfirmasi</span>";
                                                 } elseif($i['invoice_status'] == 4) {
                                                     echo "<span class='badge bg-green'>Selesai</span>";
+                                                }
+                                                echo "<br>";
+                                                if ($i['invoice_status'] > 1) {
+                                                    echo "<small>Dikonfirmasi oleh: <b>" . $i['admin_username'] . "</b></small>";
                                                 }
                                             ?>
                                         </td>

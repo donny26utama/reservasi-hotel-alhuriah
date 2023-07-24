@@ -60,14 +60,14 @@
           
           <br>
 
-          <button type="submit" class="btn btn-success btn-block btn-flat btn-block">LOGIN</button>       
+          <button type="submit" class="btn btn-success btn-block btn-flat btn-block">LOGIN</button>
 
 
          
         </form>
 
         <br>
-         <center>
+          <center>
             <a href="index.php">KEMBALI</a>
           </center>
         <br>

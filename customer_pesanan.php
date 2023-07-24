@@ -121,14 +121,14 @@
 												</a><br>
 											<?php endif; ?>
 											<?php if($i['invoice_status'] == 4): ?>
-												<a class='btn btn-sm btn-danger mb-1'
+												<a class='btn btn-sm btn-danger mb-1 d-none'
 													href="customer_rating.php?id=<?php echo $i['id_transaksi']; ?>">
 													<i class="fa fa-star"></i> Beri Rating & Review
 												</a><br>
 											<?php endif; ?>
 											<a class='btn btn-sm btn-success mb-1'
 												href="customer_invoice.php?id=<?php echo $i['id_transaksi']; ?>">
-												<i class="fa fa-print"></i> Faktur
+												<i class="fa fa-print"></i> Bukti Check In
 											</a>
 										</td>
 									</tr>
