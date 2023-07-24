@@ -218,7 +218,7 @@ $invoice = mysqli_query($koneksi, $query);
                                 <td style="width: 65%"></td>
                                 <td style="width: 35%; text-align: center">
                                     Pangkalpinang, <?= $tgl_indo ?><br>
-                                    Admin Hotel Al-Huriah<br><br><br><br><br>
+                                    Admin Al-Huriah Hotel<br><br><br><br><br>
                                     <b>( <?= $i['admin_nama'] ?> )</b>
                                 </td>
                             </tr>
