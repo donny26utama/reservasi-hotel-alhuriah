@@ -26,12 +26,17 @@ $data = mysqli_query($koneksi, "select * from nokamar where nokamar='$id'");
 
           <div class="box-header">
             <h3 class="box-title">Edit Nomor Kamar</h3>
-            <a href="fasilitas_kamar.php" class="btn btn-default btn-sm pull-right"><i class="fa fa-reply"></i> &nbsp; Kembali</a> 
+            <a href="fasilitas_kamar.php" class="btn btn-default btn-sm pull-right">
+              <i class="fa fa-reply"></i> &nbsp; Kembali
+            </a>
           </div>
           <div class="box-body">
-
+            <?php if(isset($_GET['alert']) && $_GET['alert'] == "duplicate"): ?>
+              <div class="alert alert-danger">Nomor Kamar Sudah Terdaftar</div>
+            <?php endif; ?>
             <form action="nokamar_update.php" method="post">
               <?php while($d = mysqli_fetch_array($data)): ?>
+                <input type="hidden" name="id" value="<?php echo $d['nokamar']; ?>">
                 <div class="form-group">
                   <label>Pilih Kamar</label>
                   <select class="form-control" name="kamar_id" required>
