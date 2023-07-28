@@ -71,7 +71,7 @@ $cek = mysqli_query($koneksi,"SELECT id_transaksi from check_in where no_ktp='$n
 $dtid = mysqli_fetch_object($cek);
 $id_transaksi = $dtid->id_transaksi;
 $no_urut = str_pad($id_transaksi, 6, "0", STR_PAD_LEFT);
-$no_inv = sprintf('FK/%s/%s/%s/AH/%s', $tahun, $bulan, $hari, $no_urut);
+$no_inv = sprintf('CI/%s/%s/%s/AH/%s', $tahun, $bulan, $hari, $no_urut);
 $update = mysqli_query($koneksi, "update check_in set invoice_no='$no_inv' where id_transaksi='$id_transaksi'");
 
 #bahan ambil layanan tambahan, setelah tahu id transaksi
